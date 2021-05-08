@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from 'styled-components';
+import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 
 const ChatMessage = (props) => {
 
@@ -8,8 +9,10 @@ const ChatMessage = (props) => {
   const timestamp = props.timestamp;
   const text = props.text;
 
+  const [isShown, setIsShown] = useState(false);
+
   return(
-    <Container>
+    <Container onMouseEnter={() => setIsShown(true)} onMouseLeave={() => setIsShown(false)}>
       <UserAvatar>
         <img src={image} />
       </UserAvatar>
@@ -22,6 +25,13 @@ const ChatMessage = (props) => {
           {text}
         </Text>
       </MessageContent>
+      {
+        isShown && (
+          <DeleteButtonContainer>
+            <DeleteButton />
+          </DeleteButtonContainer>
+        )
+      }
     </Container>
   );
 }
@@ -29,6 +39,7 @@ const ChatMessage = (props) => {
 export default ChatMessage;
 
 const Container = styled.div`
+  position: relative;
   padding: 8px 20px;
   display: flex;
   align-items: center;
@@ -68,4 +79,18 @@ const Name = styled.span`
 
 const Text = styled.span`
   
+`
+
+const DeleteButton = styled(HighlightOffOutlinedIcon)`
+  position: absolute;
+  right: 0;
+  margin-right: 16px;
+  cursor: pointer;
+`
+
+const DeleteButtonContainer = styled.div`
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
