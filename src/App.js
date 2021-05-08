@@ -52,7 +52,10 @@ function App() {
                     <Chat user={user}/>
                   </Route>
                   <Route path='/'>
-                    Select or create channel
+                    <NoActiveChannelContainer>
+                      Select or create channel
+                    </NoActiveChannelContainer>
+
                   </Route>
                 </Switch>
               </Main>
@@ -75,4 +78,10 @@ const Container = styled.div`
 const Main = styled.div`
   display: grid;
   grid-template-columns: 260px auto;
+`
+const NoActiveChannelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
 `
