@@ -28,6 +28,21 @@ const ChatInput = (props) => {
     setInput(input + emojiObject.emoji);
   };
 
+  const replaceStringWithEmoji = (string) => {
+    const emojiMap = {
+      ':)': '😊',
+      ':(': '🙁',
+      ':D': '😁',
+      ';(': '😥',
+      ':O': '😮',
+      ';)': '😉',
+      '8)': '😎',
+      '>:@': '😡',
+    };
+    let regex = /(?::\)|:\(|:D|;\(|:O'|;\)|8\)|>:@)/g
+    return string.replace(regex,(m)=>emojiMap[m] || m)
+  };
+
   return(
     <div>
       {
@@ -43,7 +58,7 @@ const ChatInput = (props) => {
               value={input}
               placeholder='Message here'
               onChange={(event) => {
-              setInput(event.target.value);
+              setInput(replaceStringWithEmoji(event.target.value));
             }}/>
             <EmojiButton onClick={showEmojiList}>
               <Emoji />

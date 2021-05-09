@@ -49,7 +49,7 @@ const Chat = (props) => {
     })
   }
 
-  const scrollToBottomAtStartup = () => {
+  const scrollToBottom = () => {
     let messages = document.getElementById('messages');
     messages.scrollTop = messages.scrollHeight;
   }
@@ -57,7 +57,7 @@ const Chat = (props) => {
   useEffect(() => {
     getChannelName();
     getMessages();
-    scrollToBottomAtStartup();
+    scrollToBottom();
   }, [channelId]);
 
   return(

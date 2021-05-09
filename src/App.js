@@ -46,7 +46,7 @@ function App() {
             <Container>
               <Header user={user} signOut={signOut}/>
               <Main>
-                <Sidebar rooms={rooms}/>
+                <Sidebar rooms={rooms} user={user} />
                 <Switch>
                   <Route path='/room/:channelId'>
                     <Chat user={user}/>
