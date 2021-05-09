@@ -10,6 +10,7 @@ const ChatInput = (props) => {
 
   const [input, setInput] = useState('');
   const [emojiList, setEmojiList] = useState(false);
+  const [chosenEmoji, setChosenEmoji] = useState(null);
 
   const send = (event) => {
     event.preventDefault();
@@ -22,7 +23,8 @@ const ChatInput = (props) => {
     setEmojiList(!emojiList);
   }
 
-  const onEmojiClick = (emojiObject) => {
+  const onEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject);
     setInput(input + emojiObject.emoji);
   };
 
