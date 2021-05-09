@@ -49,9 +49,15 @@ const Chat = (props) => {
     })
   }
 
+  const scrollToBottomAtStartup = () => {
+    let messages = document.getElementById('messages');
+    messages.scrollTop = messages.scrollHeight;
+  }
+
   useEffect(() => {
     getChannelName();
     getMessages();
+    scrollToBottomAtStartup();
   }, [channelId]);
 
   return(
@@ -72,7 +78,7 @@ const Chat = (props) => {
           <Info />
         </ChannelDetails>
       </Header>
-      <MessageContainer>
+      <MessageContainer id='messages'>
         {
           messages.length > 0 &&
             messages.map((data, index) => (
