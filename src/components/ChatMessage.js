@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styled from 'styled-components';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
+import db from "../firebase";
 
 const ChatMessage = (props) => {
 
@@ -8,8 +9,17 @@ const ChatMessage = (props) => {
   const image = props.image;
   const timestamp = props.timestamp;
   const text = props.text;
+  const messageId = props.messageId;
+  const channelId = props.channelId;
+  const user = props.user;
 
   const [isShown, setIsShown] = useState(false);
+
+  const deleteMessage = () => {
+    db.collection('rooms').doc(channelId)
+      .collection('messages').doc(messageId)
+      .delete();
+  }
 
   return(
     <Container onMouseEnter={() => setIsShown(true)} onMouseLeave={() => setIsShown(false)}>
@@ -19,15 +29,15 @@ const ChatMessage = (props) => {
       <MessageContent>
         <Name>
           {name}
-          <span>{new Date(timestamp.toDate()).toUTCString()}</span>
+          <span>{timestamp}</span>
         </Name>
         <Text>
           {text}
         </Text>
       </MessageContent>
       {
-        isShown && (
-          <DeleteButtonContainer>
+        isShown && user.name === name && (
+          <DeleteButtonContainer onClick={deleteMessage}>
             <DeleteButton />
           </DeleteButtonContainer>
         )

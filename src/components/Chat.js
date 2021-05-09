@@ -15,14 +15,20 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
 
   const getMessages = () => {
-    db.collection('rooms')
-      .doc(channelId)
+    db.collection('rooms').doc(channelId)
       .collection('messages')
       .orderBy('timestamp', 'asc')
-      .onSnapshot((snapshot) => {
-        let messages = snapshot.docs.map((doc) => doc.data());
-        setMessages(messages);
-      })
+      .onSnapshot((snapshot => {
+        setMessages(snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            text: doc.data().text,
+            timestamp: new Date(doc.data().timestamp.toDate()).toUTCString(),
+            user: doc.data().user,
+            userImage: doc.data().userImage
+          }
+        }))
+    }))
   }
 
   const sendMessage = (text) => {
@@ -70,7 +76,15 @@ const Chat = (props) => {
         {
           messages.length > 0 &&
             messages.map((data, index) => (
-              <ChatMessage text={data.text} name={data.user} image={data.userImage} timestamp={data.timestamp}/>
+              <ChatMessage
+                text={data.text}
+                name={data.user}
+                image={data.userImage}
+                timestamp={data.timestamp}
+                messageId={data.id}
+                channelId={channelId}
+                user={user}
+              />
             ))
         }
       </MessageContainer>
