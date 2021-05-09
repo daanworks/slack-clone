@@ -17,7 +17,7 @@ const Chat = (props) => {
   const getMessages = () => {
     db.collection('rooms').doc(channelId)
       .collection('messages')
-      .orderBy('timestamp', 'asc')
+      .orderBy('timestamp', 'desc')
       .onSnapshot((snapshot => {
         setMessages(snapshot.docs.map((doc) => {
           return {
@@ -112,7 +112,7 @@ const Header = styled.div`
 
 const MessageContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   overflow-y: scroll;
 `
 
