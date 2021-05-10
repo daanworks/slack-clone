@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styled from 'styled-components';
-import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
+import BackspaceIcon from '@material-ui/icons/Backspace';
 import db from "../firebase";
 
 const ChatMessage = (props) => {
@@ -91,7 +91,7 @@ const Text = styled.span`
   
 `
 
-const DeleteButton = styled(HighlightOffOutlinedIcon)`
+const DeleteButton = styled(BackspaceIcon)`
   position: absolute;
   right: 0;
   margin-right: 16px;

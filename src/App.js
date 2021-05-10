@@ -46,7 +46,7 @@ function App() {
             <Container>
               <Header user={user} signOut={signOut}/>
               <Main>
-                <Sidebar rooms={rooms} user={user} />
+                <Sidebar rooms={rooms} />
                 <Switch>
                   <Route path='/room/:channelId'>
                     <Chat user={user}/>
@@ -55,7 +55,6 @@ function App() {
                     <NoActiveChannelContainer>
                       Select or create channel
                     </NoActiveChannelContainer>
-
                   </Route>
                 </Switch>
               </Main>

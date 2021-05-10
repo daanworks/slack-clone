@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SendIcon from '@material-ui/icons/Send';
 import SentimentVerySatisfiedOutlinedIcon from '@material-ui/icons/SentimentVerySatisfiedOutlined';
 import EmojiPicker from "emoji-picker-react";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const ChatInput = (props) => {
 
@@ -36,8 +37,9 @@ const ChatInput = (props) => {
       ';)': '😉',
       '8)': '😎',
       '>:@': '😡',
+      '<3': '❤️',
     };
-    let regex = /(?::\)|:\(|:D|;\(|:O'|;\)|8\)|>:@)/g
+    let regex = /(?::\)|:\(|:D|;\(|:O'|;\)|8\)|>:@|<3)/g
     return string.replace(regex,(m)=>emojiMap[m] || m)
   };
 
@@ -45,7 +47,7 @@ const ChatInput = (props) => {
     <div>
       {
         emojiList && (
-          <Emojis onEmojiClick={onEmojiClick} pickerStyle={{ position: 'absolute', bottom: '100px', right: '20px'}}/>
+          <Emojis onEmojiClick={onEmojiClick} pickerStyle={{ position: 'absolute', bottom: '100px', right: '30px'}}/>
         )
       }
       <Container>
@@ -59,7 +61,13 @@ const ChatInput = (props) => {
               setInput(replaceStringWithEmoji(event.target.value));
             }}/>
             <EmojiButton onClick={showEmojiList}>
-              <Emoji />
+              {
+                emojiList ? (
+                  <CloseEmojis />
+                ) : (
+                  <Emoji />
+                )
+              }
             </EmojiButton>
             <SendButton onClick={send} type='submit'>
               <Send />
@@ -148,4 +156,8 @@ const Emojis = styled(EmojiPicker)`
   top: 123px;
   bottom: 0;
   right: 0;
+`
+
+const CloseEmojis = styled(CancelIcon)`
+  color: #4a4a4a;
 `
