@@ -5,6 +5,7 @@ import { sideBarItems } from "../data/SideBarData";
 import AddIcon from '@material-ui/icons/Add';
 import db from '../firebase';
 import { useHistory } from 'react-router-dom';
+import RemoveOutlinedIcon from '@material-ui/icons/RemoveOutlined';
 
 const Sidebar = (props) => {
 
@@ -22,8 +23,16 @@ const Sidebar = (props) => {
     if(channelName) {
       db.collection('rooms').add({
         name: channelName,
+      }).then((result) => {
+        history.push(`/room/${result.id}`);
       })
     }
+  }
+
+  const removeChannel = (id) => {
+    db.collection('rooms').doc(id).delete().then((result) => {
+      history.push('/');
+    });
   }
 
   return(
@@ -58,6 +67,9 @@ const Sidebar = (props) => {
             rooms.map((room) => (
               <Channel onClick={() => {goToChannel(room.id)}}>
                 # {room.name}
+                <RemoveOutlinedIcon onClick={() => {
+                  removeChannel(room.id);
+                }} />
               </Channel>
             ))
           }
@@ -134,7 +146,7 @@ const NewChannelContainer = styled.div`
 `
 
 const ChannelsList = styled.div`
-  
+  padding-right: 12px;
 `
 
 const Channel = styled.div`
@@ -142,6 +154,7 @@ const Channel = styled.div`
   height: 28px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   cursor: pointer;
   :hover {
     background-color: #350d36;
