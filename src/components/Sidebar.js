@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { sideBarItems } from "../data/SideBarData";
@@ -6,11 +6,13 @@ import AddIcon from '@material-ui/icons/Add';
 import db from '../firebase';
 import { useHistory } from 'react-router-dom';
 import RemoveOutlinedIcon from '@material-ui/icons/RemoveOutlined';
+import { Zoom } from '@material-ui/core';
 
 const Sidebar = (props) => {
 
   const history = useHistory();
   const rooms = props.rooms;
+  const[showDeleteChannel, setShowDeleteChannel] = useState(false);
 
   const goToChannel = (id) => {
     if(id) {
@@ -30,7 +32,7 @@ const Sidebar = (props) => {
   }
 
   const removeChannel = (id) => {
-    db.collection('rooms').doc(id).delete().then((result) => {
+    db.collection('rooms').doc(id).delete().then(() => {
       history.push('/');
     });
   }
@@ -65,11 +67,21 @@ const Sidebar = (props) => {
         <ChannelsList>
           {
             rooms.map((room) => (
-              <Channel onClick={() => {goToChannel(room.id)}}>
+              <Channel
+                onClick={() => {goToChannel(room.id)}}
+                onMouseEnter={() => {setShowDeleteChannel(true)}}
+                onMouseLeave={() => {setShowDeleteChannel(false)}}
+              >
                 # {room.name}
-                <RemoveOutlinedIcon onClick={() => {
-                  removeChannel(room.id);
-                }} />
+                {
+                  showDeleteChannel && (
+                    <Zoom in={showDeleteChannel}>
+                      <RemoveOutlinedIcon onClick={() => {
+                        removeChannel(room.id);
+                      }} />
+                    </Zoom>
+                  )
+                }
               </Channel>
             ))
           }
