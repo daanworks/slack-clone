@@ -12,7 +12,8 @@ const Sidebar = (props) => {
 
   const history = useHistory();
   const rooms = props.rooms;
-  const[showDeleteChannel, setShowDeleteChannel] = useState(false);
+  const user = props.user;
+  const [showDeleteChannel, setShowDeleteChannel] = useState(false);
 
   const goToChannel = (id) => {
     if(id) {
@@ -25,6 +26,7 @@ const Sidebar = (props) => {
     if(channelName) {
       db.collection('rooms').add({
         name: channelName,
+        user: user.name
       }).then((result) => {
         history.push(`/room/${result.id}`);
       })
@@ -35,6 +37,18 @@ const Sidebar = (props) => {
     db.collection('rooms').doc(id).delete().then(() => {
       history.push('/');
     });
+  }
+
+  const showDeleteChannelButton = (channelId, user, rooms) => {
+    const findChannelById = (channelId) => {
+      for (let i = 0; i < rooms.length; i++) {
+        if(rooms[i].id === channelId) {
+          return rooms[i];
+        }
+      }
+    }
+    const room = findChannelById(channelId);
+    return room.user === user.name;
   }
 
   return(
@@ -68,20 +82,12 @@ const Sidebar = (props) => {
           {
             rooms.map((room) => (
               <Channel
+                key={room.id}
                 onClick={() => {goToChannel(room.id)}}
-                onMouseEnter={() => {setShowDeleteChannel(true)}}
+                onMouseEnter={() => {setShowDeleteChannel(showDeleteChannelButton(room.id, user, rooms))}}
                 onMouseLeave={() => {setShowDeleteChannel(false)}}
               >
                 # {room.name}
-                {
-                  showDeleteChannel && (
-                    <Zoom in={showDeleteChannel}>
-                      <RemoveOutlinedIcon onClick={() => {
-                        removeChannel(room.id);
-                      }} />
-                    </Zoom>
-                  )
-                }
               </Channel>
             ))
           }

@@ -20,7 +20,7 @@ export const sideBarItems = [
   },
   {
     icon: <BookmarkBorderIcon />,
-    text: 'Save Items'
+    text: 'Saved Items'
   },
   {
     icon: <PeopleIcon />,

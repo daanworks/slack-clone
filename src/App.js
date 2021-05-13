@@ -20,6 +20,7 @@ function App() {
         return {
           id: doc.id,
           name: doc.data().name,
+          user: doc.data().user
         }
       }))
     });
@@ -46,7 +47,7 @@ function App() {
             <Container>
               <Header user={user} signOut={signOut}/>
               <Main>
-                <Sidebar rooms={rooms} />
+                <Sidebar rooms={rooms} user={user}/>
                 <Switch>
                   <Route path='/room/:channelId'>
                     <Chat user={user}/>
