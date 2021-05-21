@@ -1,19 +1,16 @@
-import React, {useState} from "react";
 import styled from "styled-components";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { sideBarItems } from "../data/SideBarData";
 import AddIcon from '@material-ui/icons/Add';
 import db from '../firebase';
 import { useHistory } from 'react-router-dom';
-import RemoveOutlinedIcon from '@material-ui/icons/RemoveOutlined';
-import { Zoom } from '@material-ui/core';
+import Channel from "./Channel";
 
 const Sidebar = (props) => {
 
   const history = useHistory();
   const rooms = props.rooms;
   const user = props.user;
-  const [showDeleteChannel, setShowDeleteChannel] = useState(false);
 
   const goToChannel = (id) => {
     if(id) {
@@ -31,24 +28,6 @@ const Sidebar = (props) => {
         history.push(`/room/${result.id}`);
       })
     }
-  }
-
-  const removeChannel = (id) => {
-    db.collection('rooms').doc(id).delete().then(() => {
-      history.push('/');
-    });
-  }
-
-  const showDeleteChannelButton = (channelId, user, rooms) => {
-    const findChannelById = (channelId) => {
-      for (let i = 0; i < rooms.length; i++) {
-        if(rooms[i].id === channelId) {
-          return rooms[i];
-        }
-      }
-    }
-    const room = findChannelById(channelId);
-    return room.user === user.name;
   }
 
   return(
@@ -81,14 +60,9 @@ const Sidebar = (props) => {
         <ChannelsList>
           {
             rooms.map((room) => (
-              <Channel
-                key={room.id}
-                onClick={() => {goToChannel(room.id)}}
-                onMouseEnter={() => {setShowDeleteChannel(showDeleteChannelButton(room.id, user, rooms))}}
-                onMouseLeave={() => {setShowDeleteChannel(false)}}
-              >
-                # {room.name}
-              </Channel>
+              <div onClick={() => {goToChannel(room.id)}}>
+                <Channel room={room} user={user} />
+              </div>
             ))
           }
         </ChannelsList>
@@ -165,18 +139,6 @@ const NewChannelContainer = styled.div`
 
 const ChannelsList = styled.div`
   padding-right: 12px;
-`
-
-const Channel = styled.div`
-  padding-left: 19px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  :hover {
-    background-color: #350d36;
-  }
 `
 
 const Add = styled(AddIcon)`
