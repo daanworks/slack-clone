@@ -9,3 +9,5 @@ Used technologies: React, Firebase
  - delete their own messages
  - create channels
  - delete their own channels
+
+###**Hosting URL**: https://slack-clone-389ed.web.app
