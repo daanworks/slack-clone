@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 import styled from 'styled-components';
 import BackspaceIcon from '@material-ui/icons/Backspace';
+import EditIcon from '@material-ui/icons/Edit';
 import db from "../firebase";
+import EditMessage from "./EditMessage";
 
 const ChatMessage = (props) => {
 
@@ -14,11 +16,16 @@ const ChatMessage = (props) => {
   const user = props.user;
 
   const [isShown, setIsShown] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   const deleteMessage = () => {
     db.collection('rooms').doc(channelId)
       .collection('messages').doc(messageId)
       .delete();
+  }
+
+  const editMessage = (event) => {
+    setEdit(!edit);
   }
 
   return(
@@ -31,15 +38,31 @@ const ChatMessage = (props) => {
           {name}
           <span>{timestamp}</span>
         </Name>
-        <Text>
-          {text}
-        </Text>
+        {
+          !edit && (
+            <Text>
+              {text}
+            </Text>
+          )
+        }
+        {
+          edit && (
+            <EditContainer>
+              <EditMessage message={text} channelId={channelId} messageId={messageId} setEdit={setEdit}/>
+            </EditContainer>
+          )
+        }
       </MessageContent>
       {
         isShown && user.name === name && (
-          <DeleteButtonContainer onClick={deleteMessage}>
-            <DeleteButton />
-          </DeleteButtonContainer>
+          <UserButtonContainer>
+            <DeleteButtonContainer onClick={deleteMessage}>
+              <DeleteButton />
+            </DeleteButtonContainer>
+            <EditButtonContainer onClick={editMessage}>
+              <EditButton />
+            </EditButtonContainer>
+          </UserButtonContainer>
         )
       }
     </Container>
@@ -91,6 +114,11 @@ const Text = styled.span`
   
 `
 
+const UserButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const DeleteButton = styled(BackspaceIcon)`
   position: absolute;
   right: 0;
@@ -103,4 +131,22 @@ const DeleteButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+
+const EditButtonContainer = styled.div`
+  color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const EditButton = styled(EditIcon)`
+  position: absolute;
+  right: 0;
+  margin-right: 52px;
+  cursor: pointer;
+`
+
+const EditContainer = styled.div`
+  
 `

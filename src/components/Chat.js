@@ -68,6 +68,14 @@ const Chat = (props) => {
             # {channel && channel.name}
           </ChannelName>
           <ChannelInfo>
+            {/*{*/}
+            {/*  user.name === channel.user ?*/}
+            {/*    (*/}
+            {/*      `Your channel`*/}
+            {/*    ) : (*/}
+            {/*      `${channel.user.split(" ")[0]}'s channel`*/}
+            {/*    )*/}
+            {/*}*/}
             Company wide announcements and infos
           </ChannelInfo>
         </Channel>
@@ -83,6 +91,7 @@ const Chat = (props) => {
           messages.length > 0 &&
             messages.map((data, index) => (
               <ChatMessage
+                key={data.id}
                 text={data.text}
                 name={data.user}
                 image={data.userImage}

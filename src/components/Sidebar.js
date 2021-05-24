@@ -61,7 +61,7 @@ const Sidebar = (props) => {
           {
             rooms.map((room) => (
               <div onClick={() => {goToChannel(room.id)}}>
-                <Channel room={room} user={user} />
+                <Channel key={room.id} room={room} user={user} />
               </div>
             ))
           }
