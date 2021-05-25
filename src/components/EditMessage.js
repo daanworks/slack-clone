@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import db from "../firebase";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const EditMessage = (props) => {
 
@@ -12,19 +11,23 @@ const EditMessage = (props) => {
 
   const [editedMessage, setEditedMessage] = useState(message);
 
+  const commitEditedMessage = async () => {
+    const originalMessage = db.collection('rooms').doc(channelId)
+      .collection('messages').doc(messageId);
+    const res = await originalMessage.update({text: editedMessage}).then(() => {
+      setEdit(false);
+    })
+  }
+
   return(
-    <Form>
+    <Form onSubmit={(event) => {
+      event.preventDefault();
+      commitEditedMessage();
+    }}>
       <input autoFocus={true} value={editedMessage} onChange={(event) => {
         event.preventDefault();
         setEditedMessage(event.target.value);
       }} type='text' />
-      <UpdateChanges fontSize='small' onClick={async () => {
-        const originalMessage = db.collection('rooms').doc(channelId)
-          .collection('messages').doc(messageId);
-        const res = await originalMessage.update({text: editedMessage}).then((result) => {
-          setEdit(false);
-        });
-      }} />
     </Form>
   )
 }
@@ -37,19 +40,14 @@ const Form = styled.form`
     outline: none;
     border: none;
     background: transparent;
-    margin: 0;
     padding: 0;
+    margin-bottom: -1px;
+    margin-top: 1px;
     font-size: 16px;
     font-style: italic;
-    width: 300px;
+    width: 600px;
   }
   button{
     height: 18px;
   }
-`
-
-const UpdateChanges = styled(CheckCircleIcon)`
-  cursor: pointer;
-  color: green;
-  margin: 0;
 `
