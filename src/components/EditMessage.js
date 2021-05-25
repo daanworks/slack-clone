@@ -46,6 +46,7 @@ const Form = styled.form`
     font-size: 16px;
     font-style: italic;
     width: 600px;
+    letter-spacing: 0.1px;
   }
   button{
     height: 18px;
