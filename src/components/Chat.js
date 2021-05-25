@@ -25,7 +25,8 @@ const Chat = (props) => {
             text: doc.data().text,
             timestamp: new Date(doc.data().timestamp.toDate()).toUTCString(),
             user: doc.data().user,
-            userImage: doc.data().userImage
+            userImage: doc.data().userImage,
+            isModified: doc.data().isModified
           }
         }))
     }))
@@ -37,7 +38,8 @@ const Chat = (props) => {
         text: text,
         user: user.name,
         userImage: user.photo,
-        timestamp: firebase.firestore.Timestamp.now()
+        timestamp: firebase.firestore.Timestamp.now(),
+        isModified: false,
       }
       db.collection('rooms').doc(channelId).collection('messages').add(payload);
     }
@@ -96,6 +98,7 @@ const Chat = (props) => {
                 name={data.user}
                 image={data.userImage}
                 timestamp={data.timestamp}
+                isModified={data.isModified}
                 messageId={data.id}
                 channelId={channelId}
                 user={user}

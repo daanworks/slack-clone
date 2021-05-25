@@ -27,6 +27,14 @@ const Sidebar = (props) => {
       }).then((result) => {
         history.push(`/room/${result.id}`);
       })
+    } else {
+      db.collection('rooms').add(
+        {
+          name: `${user.name.split(" ")[0]}'s channel`,
+          user: user.name
+        }).then((result) => {
+        history.push(`/room/${result.id}`);
+      })
     }
   }
 

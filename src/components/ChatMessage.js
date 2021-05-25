@@ -11,6 +11,7 @@ const ChatMessage = (props) => {
   const image = props.image;
   const timestamp = props.timestamp;
   const text = props.text;
+  const isModified = props.isModified;
   const messageId = props.messageId;
   const channelId = props.channelId;
   const user = props.user;
@@ -36,7 +37,12 @@ const ChatMessage = (props) => {
       <MessageContent>
         <Name>
           {name}
-          <span>{timestamp}</span>
+          <Timestamp>{timestamp}</Timestamp>
+          {
+            isModified === true && (
+              <Edited>* Edited *</Edited>
+            )
+          }
         </Name>
         {
           !edit && (
@@ -102,12 +108,6 @@ const Name = styled.span`
   font-weight: 900;
   font-size: 15px;
   line-height: 1.4;
-  span {
-    margin-left: 8px;
-    font-weight: 400;
-    color: rgba(97,96,97);
-    font-size: 13px;
-  }
 `
 
 const Text = styled.span`
@@ -149,4 +149,19 @@ const EditButton = styled(EditIcon)`
 
 const EditContainer = styled.div`
   
+`
+
+const Timestamp = styled.span`
+  margin-left: 8px;
+  font-weight: 400;
+  color: rgba(97,96,97);
+  font-size: 13px;
+`
+
+const Edited = styled.span`
+  margin-left: 8px;
+  font-weight: 400;
+  color: rgba(97,96,97);
+  font-size: 11px;
+  font-style: italic;
 `

@@ -14,7 +14,10 @@ const EditMessage = (props) => {
   const commitEditedMessage = async () => {
     const originalMessage = db.collection('rooms').doc(channelId)
       .collection('messages').doc(messageId);
-    const res = await originalMessage.update({text: editedMessage}).then(() => {
+    const res = await originalMessage.update({
+      text: editedMessage,
+      isModified: true
+    }).then(() => {
       setEdit(false);
     })
   }
