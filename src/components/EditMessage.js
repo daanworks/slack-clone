@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import db from "../firebase";
+import loadingGif from '../images/loading.gif'
 
 const EditMessage = (props) => {
 
@@ -10,8 +11,10 @@ const EditMessage = (props) => {
   const setEdit = props.setEdit;
 
   const [editedMessage, setEditedMessage] = useState(message);
+  const [isLoading, setIsLoading] = useState(false);
 
   const commitEditedMessage = async () => {
+    setIsLoading(true);
     const originalMessage = db.collection('rooms').doc(channelId)
       .collection('messages').doc(messageId);
     const res = await originalMessage.update({
@@ -20,19 +23,26 @@ const EditMessage = (props) => {
     }).then(() => {
       setEdit(false);
     })
+    setIsLoading(false);
   }
 
-  return(
-    <Form onSubmit={(event) => {
-      event.preventDefault();
-      commitEditedMessage();
-    }}>
-      <input autoFocus={true} value={editedMessage} onChange={(event) => {
+  if(isLoading) {
+    return(
+      <Loading src={loadingGif} />
+    )
+  } else {
+    return(
+      <Form onSubmit={(event) => {
         event.preventDefault();
-        setEditedMessage(event.target.value);
-      }} type='text' />
-    </Form>
-  )
+        commitEditedMessage();
+      }}>
+        <input autoFocus={true} value={editedMessage} onChange={(event) => {
+          event.preventDefault();
+          setEditedMessage(event.target.value);
+        }} type='text' />
+      </Form>
+    )
+  }
 }
 
 export default EditMessage;
@@ -54,4 +64,8 @@ const Form = styled.form`
   button{
     height: 18px;
   }
+`
+
+const Loading = styled.img`
+  height: 8px;
 `
