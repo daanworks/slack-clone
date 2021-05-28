@@ -4,7 +4,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import db from '../firebase'
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import firebase from 'firebase';
 
 const Chat = (props) => {
@@ -13,6 +13,7 @@ const Chat = (props) => {
   const user = props.user;
   const [channel, setChannel] = useState();
   const [messages, setMessages] = useState([]);
+  const [channelCreator, setChannelCreator] = useState('');
 
   const getMessages = () => {
     db.collection('rooms').doc(channelId)
@@ -51,6 +52,12 @@ const Chat = (props) => {
     })
   }
 
+  const getChannelCreator = () => {
+    db.collection('rooms').doc(channelId).onSnapshot((snapshot) => {
+      setChannelCreator(snapshot.data().user);
+    });
+  }
+
   const scrollToBottom = () => {
     let messages = document.getElementById('messages');
     messages.scrollTop = messages.scrollHeight;
@@ -58,6 +65,7 @@ const Chat = (props) => {
 
   useEffect(() => {
     getChannelName();
+    getChannelCreator();
     getMessages();
     scrollToBottom();
   }, [channelId]);
@@ -70,7 +78,7 @@ const Chat = (props) => {
             # {channel && channel.name}
           </ChannelName>
           <ChannelInfo>
-            Company wide announcements and infos
+            {channelCreator}'s channel
           </ChannelInfo>
         </Channel>
         <ChannelDetails>

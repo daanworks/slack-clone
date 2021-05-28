@@ -71,12 +71,10 @@ const ChatInput = (props) => {
               placeholder='Message here'
               onChange={(event) => {
                 setInput(replaceStringWithEmoji(event.target.value));
-              }}
-              onKeyDown={() => {
                 setSomeoneIsTyping(true);
                 typingStops();
               }}
-              />
+            />
             <EmojiButton onClick={showEmojiList}>
               {
                 emojiList ? (
