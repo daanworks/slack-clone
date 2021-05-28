@@ -70,14 +70,6 @@ const Chat = (props) => {
             # {channel && channel.name}
           </ChannelName>
           <ChannelInfo>
-            {/*{*/}
-            {/*  user.name === channel.user ?*/}
-            {/*    (*/}
-            {/*      `Your channel`*/}
-            {/*    ) : (*/}
-            {/*      `${channel.user.split(" ")[0]}'s channel`*/}
-            {/*    )*/}
-            {/*}*/}
             Company wide announcements and infos
           </ChannelInfo>
         </Channel>
@@ -106,7 +98,7 @@ const Chat = (props) => {
             ))
         }
       </MessageContainer>
-      <ChatInput sendMessage={sendMessage}/>
+      <ChatInput sendMessage={sendMessage} user={user}/>
     </Container>
   );
 }

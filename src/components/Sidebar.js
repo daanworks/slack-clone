@@ -18,23 +18,23 @@ const Sidebar = (props) => {
     }
   }
 
+  const isChannelExists = (channelName) => {
+    return rooms.some(room => room.name === channelName);
+  }
+
   const addChannel = () => {
     const channelName = prompt('Enter channel name:');
     if(channelName) {
-      db.collection('rooms').add({
-        name: channelName,
-        user: user.name
-      }).then((result) => {
-        history.push(`/room/${result.id}`);
-      })
-    } else {
-      db.collection('rooms').add(
-        {
-          name: `${user.name.split(" ")[0]}'s channel`,
+      if(!isChannelExists(channelName)) {
+        db.collection('rooms').add({
+          name: channelName,
           user: user.name
         }).then((result) => {
-        history.push(`/room/${result.id}`);
-      })
+          history.push(`/room/${result.id}`)
+        })
+      } else {
+        alert('The channel already exists!');
+      }
     }
   }
 

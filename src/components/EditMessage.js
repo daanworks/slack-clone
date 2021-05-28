@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import db from "../firebase";
-import loadingGif from '../images/loading.gif'
+import loadingGif from '../images/loading.jpeg'
 
 const EditMessage = (props) => {
 
@@ -67,5 +67,5 @@ const Form = styled.form`
 `
 
 const Loading = styled.img`
-  height: 8px;
+  height: 12px;
 `

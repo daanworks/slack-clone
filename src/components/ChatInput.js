@@ -1,22 +1,28 @@
-import React, {useState} from "react";
+import React, {useState, useCallback} from "react";
 import styled from 'styled-components';
 import SendIcon from '@material-ui/icons/Send';
 import SentimentVerySatisfiedOutlinedIcon from '@material-ui/icons/SentimentVerySatisfiedOutlined';
 import EmojiPicker from "emoji-picker-react";
 import CancelIcon from '@material-ui/icons/Cancel';
+import isTyping from '../images/typing.gif'
+import debounce from "lodash.debounce";
 
 const ChatInput = (props) => {
 
   const sendMessage = props.sendMessage;
+  const user = props.user;
+  const currentUser = JSON.parse(localStorage.getItem('user'));
 
   const [input, setInput] = useState('');
   const [emojiList, setEmojiList] = useState(false);
+  const [someoneIsTyping, setSomeoneIsTyping] = useState(false);
 
   const send = (event) => {
     event.preventDefault();
     if(!input) return;
     sendMessage(input);
     setInput('');
+    setSomeoneIsTyping(false);
   }
 
   const showEmojiList = () => {
@@ -44,6 +50,10 @@ const ChatInput = (props) => {
     return string.replace(regex,(m)=>emojiMap[m] || m)
   };
 
+  const typingStops = useCallback(debounce(() => {
+    setSomeoneIsTyping(false);
+  }, 2000), []);
+
   return(
     <div>
       {
@@ -60,8 +70,13 @@ const ChatInput = (props) => {
               value={input}
               placeholder='Message here'
               onChange={(event) => {
-              setInput(replaceStringWithEmoji(event.target.value));
-            }}/>
+                setInput(replaceStringWithEmoji(event.target.value));
+              }}
+              onKeyDown={() => {
+                setSomeoneIsTyping(true);
+                typingStops();
+              }}
+              />
             <EmojiButton onClick={showEmojiList}>
               {
                 emojiList ? (
@@ -76,6 +91,14 @@ const ChatInput = (props) => {
             </SendButton>
           </form>
         </InputContainer>
+        {
+          someoneIsTyping && (
+            <TypingContainer>
+              <SomeoneIsTypingText>Someone is typing</SomeoneIsTypingText>
+              <SomeoneIsTypingGif src={isTyping} />
+            </TypingContainer>
+          )
+        }
       </Container>
     </div>
   );
@@ -162,4 +185,23 @@ const Emojis = styled(EmojiPicker)`
 
 const CloseEmojis = styled(CancelIcon)`
   color: #4a4a4a;
+`
+
+const SomeoneIsTypingGif = styled.img`
+  height: 3px;
+  margin-left: 1px;
+  margin-bottom: 2.5px;
+`
+
+const TypingContainer = styled.div`
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+`
+
+const SomeoneIsTypingText = styled.span`
+  font-size: 10px;
+  font-style: italic;
 `
