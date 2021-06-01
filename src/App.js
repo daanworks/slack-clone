@@ -8,11 +8,13 @@ import Sidebar from "./components/Sidebar";
 import db from "./firebase";
 import {useEffect, useState} from "react";
 import { auth, provider } from "./firebase";
+import { Helmet } from "react-helmet";
 
 function App() {
 
   const [rooms, setRooms] = useState([]);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [title, setTitle] = useState('Slack clone');
 
   const getChannels = () => {
     db.collection('rooms').onSnapshot((snapshot) => {
@@ -33,7 +35,17 @@ function App() {
     });
   }
 
+  const setTabTitle = () => {
+    if(user) {
+      setTitle(`Slack clone | ${user.name}`);
+    } else {
+      setTitle('Slack clone');
+    }
+  }
+
   useEffect(() => {
+    setTabTitle();
+    document.title = title;
     getChannels();
   }, []);
 
@@ -42,9 +54,17 @@ function App() {
       <Router>
         {
           !user ?
-            <Login setUser={setUser}/>
+            <div>
+              <Helmet>
+                <title>Slack clone</title>
+              </Helmet>
+              <Login setUser={setUser}/>
+            </div>
             :
             <Container>
+              <Helmet>
+                <title>{`Slack clone | ${user.name}`}</title>
+              </Helmet>
               <Header user={user} signOut={signOut}/>
               <Main>
                 <Sidebar rooms={rooms} user={user}/>

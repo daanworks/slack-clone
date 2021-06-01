@@ -12,6 +12,7 @@ const ChatInput = (props) => {
   const sendMessage = props.sendMessage;
   const user = props.user;
   const currentUser = JSON.parse(localStorage.getItem('user'));
+  const everyoneExceptMe = user.name !== currentUser.name;
 
   const [input, setInput] = useState('');
   const [emojiList, setEmojiList] = useState(false);
@@ -90,7 +91,7 @@ const ChatInput = (props) => {
           </form>
         </InputContainer>
         {
-          someoneIsTyping && (
+          someoneIsTyping && everyoneExceptMe && (
             <TypingContainer>
               <SomeoneIsTypingText>Someone is typing</SomeoneIsTypingText>
               <SomeoneIsTypingGif src={isTyping} />

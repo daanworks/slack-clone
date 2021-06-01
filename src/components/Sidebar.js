@@ -4,7 +4,7 @@ import { sideBarItems } from "../data/SideBarData";
 import AddIcon from '@material-ui/icons/Add';
 import db from '../firebase';
 import { useHistory } from 'react-router-dom';
-import Channel from "./Channel";
+import Channel from "./Channel";  
 
 const Sidebar = (props) => {
 
