@@ -14,7 +14,6 @@ function App() {
 
   const [rooms, setRooms] = useState([]);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-  const [title, setTitle] = useState('Slack clone');
 
   const getChannels = () => {
     db.collection('rooms').onSnapshot((snapshot) => {
@@ -35,17 +34,7 @@ function App() {
     });
   }
 
-  const setTabTitle = () => {
-    if(user) {
-      setTitle(`Slack clone | ${user.name}`);
-    } else {
-      setTitle('Slack clone');
-    }
-  }
-
   useEffect(() => {
-    setTabTitle();
-    document.title = title;
     getChannels();
   }, []);
 
