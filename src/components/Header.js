@@ -2,8 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import {useHistory} from 'react-router-dom';
 
 const Header = (props) => {
+
+  const history = useHistory();
 
   const user = props.user;
   const signOut = props.signOut;
@@ -21,7 +24,10 @@ const Header = (props) => {
       </Main>
       <UserContainer>
         <Name>{user.name}</Name>
-        <UserImage onClick={signOut}>
+        <UserImage onClick={() => {
+          signOut();
+          history.push('/');
+        }}>
           <img src={user.photo ? user.photo : "https://i.imgur.com/6VBx3io.png"} />
         </UserImage>
       </UserContainer>

@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import db from "./firebase";
 import {useEffect, useState} from "react";
-import { auth, provider } from "./firebase";
+import { auth } from "./firebase";
 import { Helmet } from "react-helmet";
 
 function App() {
